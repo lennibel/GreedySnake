@@ -15,7 +15,7 @@ public abstract class Snakes : MonoBehaviour
 
     public GameObject SnakeSegment;
     public GameLogic gameLogic;
-    public Text diceUI;
+
 
 
     
@@ -43,7 +43,6 @@ public abstract class Snakes : MonoBehaviour
         stepNum -= 1;
         gameLogic.step -= 1;
         stepLength = skillStepLength;
-        diceUI.text = stepNum.ToString();
     }
     protected void move (KeyCode up,KeyCode down,KeyCode left,KeyCode right)
     {
@@ -63,9 +62,13 @@ public abstract class Snakes : MonoBehaviour
     {
         if (other.tag == "Food")
         {
-            if (other.TryGetComponent(out FoodAdd f))
+            if (other.TryGetComponent(out FoodAdd a))
             {
-                Grow();
+                AddBody();
+            }
+            else if (other.TryGetComponent(out FoodSubtract s))
+            {
+                subtractBody(s.foodNum);
             }
             else if (other.TryGetComponent(out FoodDoubleStep d))
             {
@@ -89,7 +92,7 @@ public abstract class Snakes : MonoBehaviour
         }
     }
 
-    private void Grow()
+    private void AddBody()
     {
         GameObject segment = Instantiate(this.SnakeSegment);
   
@@ -97,5 +100,16 @@ public abstract class Snakes : MonoBehaviour
 
         _segments.Add(segment);
 
+    }
+    private void subtractBody(int index)
+    {
+        while(index > 0 && _segments.Count > 1)
+        {
+            GameObject.Destroy(_segments[_segments.Count - 1]);
+            _segments.RemoveAt(_segments.Count - 1);
+            index -= 1;
+            print("1");
+        }
+        
     }
 }

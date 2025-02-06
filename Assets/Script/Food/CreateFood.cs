@@ -86,6 +86,10 @@ public class CreateFood : MonoBehaviour
     {
         createFoods();
     }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T)) createFoods();
+    }
 }
 
 [System.Serializable]

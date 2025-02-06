@@ -7,6 +7,8 @@ public class GameLogic : MonoBehaviour
     [Header("input parameter")]
     public Snakes playerA;
     public Snakes playerB;
+    [HideInInspector]public int playerAInningNum;
+    [HideInInspector]public int playerBInningNum;
     public Text diceUI;
     public Text tipUI;
     public E_PlayerType playerType;
@@ -24,6 +26,8 @@ public class GameLogic : MonoBehaviour
 
     void Start()
     {
+        playerAInningNum = 0;
+        playerBInningNum = 0;
         playerType = E_PlayerType.TURNA;
         diceUI.color = new Color(.8f, 0, 0, 0.5f);
         tipUIAnimation($"{playerA_Name[0]} {playerA_Name[1]} 回 合");
@@ -35,7 +39,7 @@ public class GameLogic : MonoBehaviour
         {
             if (playerType == E_PlayerType.TURNA)
             {
-                diceStep(playerA);
+                diceStep(playerA,ref playerAInningNum);
                 if (step == 0)
                 {
                     playerType = E_PlayerType.TURNB;
@@ -47,7 +51,7 @@ public class GameLogic : MonoBehaviour
             }
             else
             {
-                diceStep(playerB);
+                diceStep(playerB,ref playerBInningNum);
                 if (step == 0)
                 {
                     playerType = E_PlayerType.TURNA;
@@ -74,7 +78,7 @@ public class GameLogic : MonoBehaviour
         }
     }
 
-    public void diceStep(Snakes player)
+    public void diceStep(Snakes player,ref int inningNum)
     {
         if (randomDice)
         {
@@ -91,8 +95,13 @@ public class GameLogic : MonoBehaviour
                 diceUI.text = randomStep.ToString();
                 player.stepNum = randomStep;
                 step = randomStep;
+                inningNum += 1;
                 randomDice = false;
             }
+        }
+        else
+        {
+            diceUI.text = player.stepNum.ToString();
         }
     }
 
