@@ -8,6 +8,7 @@ public class PlayerA : Snakes
     void Start()
     {
         _body.Add(this.gameObject);
+        positionHistory.Insert(0,transform.position);
     }
     void Update()
     {

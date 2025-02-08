@@ -12,12 +12,16 @@ public abstract class Snakes : MonoBehaviour
     public GameLogic gameLogic;
 
     [HideInInspector]public int stepNum;
+    [HideInInspector]public int playerInningNum;
+    [HideInInspector]public int doubleSpeedInningNum;
 
     protected Vector2 orientation;
     protected List<GameObject> _body = new List<GameObject>();
     protected List<Vector3> positionHistory = new List<Vector3>();
-    protected int stepLength = 10;
-    protected int skillStepLength = 1;
+    protected int stepLength;
+
+    // protected int
+
 
 
 
@@ -32,6 +36,8 @@ public abstract class Snakes : MonoBehaviour
                 0.0f
             );
             this.transform.up = orientation;
+            positionHistory.Insert(0,transform.position);
+
             stepLength -= 1;
             
             fixBodyPos();
@@ -42,7 +48,7 @@ public abstract class Snakes : MonoBehaviour
     {
         for (int i = 1; i < _body.Count; i++)
             { 
-                _body[i].transform.position = positionHistory[i - 1];
+                _body[i].transform.position = positionHistory[i];
                 _body[i].transform.up = (_body[i - 1].transform.position - _body[i].transform.position).normalized;
             }
     }
@@ -51,8 +57,8 @@ public abstract class Snakes : MonoBehaviour
         stepNum -= 1;
         gameLogic.step -= 1;
         orientation = ori;
-        stepLength = skillStepLength;
-        positionHistory.Insert(0,transform.position);
+
+        stepLength = doubleSpeedInningNum > 0?2:1;
     }
     protected void move (KeyCode up,KeyCode down,KeyCode left,KeyCode right)
     {
@@ -82,16 +88,35 @@ public abstract class Snakes : MonoBehaviour
             }
             else if (other.TryGetComponent(out FoodDoubleStep d))
             {
-                stepLength = 2;
+                doubleSpeedInningNum = Mathf.Max(doubleSpeedInningNum,0);
+                doubleSpeedInningNum += 3;   
             }
-            // else if (other.TryGetComponent())
-            // {
-                
-            // }
+            //重置地图食物
             else if (other.TryGetComponent(out FoodReset r))
             {
                 r.foodSkill();
             }
+            //菜就多练
+            else if (other.TryGetComponent(out FoodAgainDice again ))
+            {
+                gameLogic.diceStep(this);
+            }
+            //反转对手
+            else if(other.TryGetComponent(out FoodReversalRival rr))
+            {
+
+            }
+            //反转自己和对手
+            else if(other.TryGetComponent(out FoodReversalSelf rs))
+            {
+
+            }
+            //减去对手上回合增加的身体
+            else if(other.TryGetComponent(out FoodSubtractRival sr))
+            {
+
+            }
+            
 
             Destroy(other.gameObject);
         }
