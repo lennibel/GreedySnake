@@ -1,20 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
 
 public abstract class Snakes : MonoBehaviour
 {
-    protected Vector2 _position;
-    public List<GameObject> _segments;
-    public int stepNum;
-    protected int stepLength;
-    protected int skillStepLength = 1;
-
     public GameObject SnakeSegment;
     public GameLogic gameLogic;
+
+    [HideInInspector]public int stepNum;
+
+    protected Vector2 orientation;
+    protected List<GameObject> _body = new List<GameObject>();
+    protected List<Vector3> positionHistory = new List<Vector3>();
+    protected int stepLength = 10;
+    protected int skillStepLength = 1;
 
 
 
@@ -23,38 +26,45 @@ public abstract class Snakes : MonoBehaviour
     {
         if (stepLength > 0)
         {
-            for (int i = _segments.Count - 1; i > 0; i--)
-            {
-                _segments[i].transform.position = _segments[i - 1].transform.position;
-            }
-
             this.transform.position = new Vector3(
-                Mathf.Round(transform.position.x) + _position.x,
-                Mathf.Round(transform.position.y) + _position.y,
+                Mathf.Round(transform.position.x) + orientation.x,
+                Mathf.Round(transform.position.y) + orientation.y,
                 0.0f
             );
+            this.transform.up = orientation;
             stepLength -= 1;
+            
+            fixBodyPos();
         }
         
     }
-    protected void oneStep(Vector2 dir)
+    protected void fixBodyPos()
     {
-        _position = dir;
+        for (int i = 1; i < _body.Count; i++)
+            { 
+                _body[i].transform.position = positionHistory[i - 1];
+                _body[i].transform.up = (_body[i - 1].transform.position - _body[i].transform.position).normalized;
+            }
+    }
+    protected void oneStep(Vector2 ori)
+    {
         stepNum -= 1;
         gameLogic.step -= 1;
+        orientation = ori;
         stepLength = skillStepLength;
+        positionHistory.Insert(0,transform.position);
     }
     protected void move (KeyCode up,KeyCode down,KeyCode left,KeyCode right)
     {
         if (stepNum > 0)
         {
-            if (Input.GetKeyDown(up) && _position != Vector2.down)      oneStep(Vector2.up);
+            if (Input.GetKeyDown(up) && orientation != Vector2.down)      oneStep(Vector2.up);
 
-            if (Input.GetKeyDown(down) && _position != Vector2.up)      oneStep(Vector2.down);
+            if (Input.GetKeyDown(down) && orientation != Vector2.up)      oneStep(Vector2.down);
 
-            if (Input.GetKeyDown(left) && _position != Vector2.right)   oneStep(Vector2.left);
+            if (Input.GetKeyDown(left) && orientation != Vector2.right)   oneStep(Vector2.left);
 
-            if (Input.GetKeyDown(right) && _position != Vector2.left)   oneStep(Vector2.right);
+            if (Input.GetKeyDown(right) && orientation != Vector2.left)   oneStep(Vector2.right);
         }
     }
 
@@ -72,7 +82,7 @@ public abstract class Snakes : MonoBehaviour
             }
             else if (other.TryGetComponent(out FoodDoubleStep d))
             {
-                skillStepLength *= d.foodNum;
+                stepLength = 2;
             }
             // else if (other.TryGetComponent())
             // {
@@ -85,7 +95,7 @@ public abstract class Snakes : MonoBehaviour
 
             Destroy(other.gameObject);
         }
-        if (((other.tag == "Player") || (other.tag == "Wall")) && (other.gameObject != _segments[1]))
+        if (((other.tag == "Player") || (other.tag == "Wall")) && (other.gameObject != _body[1]))
         {
             stepNum = 0;
             gameLogic.playGame = false;
@@ -94,22 +104,17 @@ public abstract class Snakes : MonoBehaviour
 
     private void AddBody()
     {
-        GameObject segment = Instantiate(this.SnakeSegment);
-  
-        segment.transform.position = _segments[_segments.Count - 1].transform.position;
-
-        _segments.Add(segment);
-
+        GameObject obj = Instantiate(this.SnakeSegment);
+        _body.Add(obj);
+        fixBodyPos();
     }
     private void subtractBody(int index)
     {
-        while(index > 0 && _segments.Count > 1)
+        while(index > 0 && _body.Count > 1)
         {
-            GameObject.Destroy(_segments[_segments.Count - 1]);
-            _segments.RemoveAt(_segments.Count - 1);
+            GameObject.Destroy(_body[_body.Count - 1]);
+            _body.RemoveAt(_body.Count - 1);
             index -= 1;
-            print("1");
         }
-        
     }
 }

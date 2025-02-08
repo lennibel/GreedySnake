@@ -14,7 +14,7 @@ public class GameLogic : MonoBehaviour
     public E_PlayerType playerType;
     [HideInInspector] public int step;
     [HideInInspector] public bool playGame = true;
-    protected float randomTime = 1;
+    protected float randomTime = 0.5f;
     protected bool randomDice = true;
 
     [Header("display text")]
@@ -82,7 +82,7 @@ public class GameLogic : MonoBehaviour
     {
         if (randomDice)
         {
-            int randomStep = Random.Range(1, 7);
+            int randomStep = Random.Range(10, 20);
 
             randomTime -= Time.deltaTime;
             if (randomTime > 0)

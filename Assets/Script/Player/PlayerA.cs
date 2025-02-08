@@ -7,7 +7,7 @@ public class PlayerA : Snakes
 {
     void Start()
     {
-        _segments.Add(this.gameObject);
+        _body.Add(this.gameObject);
     }
     void Update()
     {
