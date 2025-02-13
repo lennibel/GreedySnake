@@ -12,8 +12,9 @@ public class GameLogic : MonoBehaviour
     public E_PlayerType playerType;
     [HideInInspector] public int step;
     [HideInInspector] public bool playGame = true;
-    protected float randomTime = 0.5f;
-    protected bool randomDice = true;
+    [HideInInspector]public float randomTime;
+    [HideInInspector]public float randomTimeDefault = 0.5f;
+    [HideInInspector]public bool randomDice = true;
 
     [Header("display text")]
     public string playerA_Name = "红方";
@@ -35,24 +36,27 @@ public class GameLogic : MonoBehaviour
         {
             if (playerType == E_PlayerType.TURNA)
             {
-                diceStep(playerA);
+                diceStep(playerA,1);
                 if (step == 0)
                 {
                     playerType = E_PlayerType.TURNB;
+                    playerB.resetInningParameter();
                     randomDice = true;
-                    randomTime = 1;
+                    randomTime = randomTimeDefault;
                     tipUIAnimation($"{playerB_Name[0]} {playerB_Name[1]} 回 合");
                     diceUI.color = new Color(0, 0, 1, 0.5f);
                 }
             }
             else
             {
-                diceStep(playerB);
+                diceStep(playerB,1);
                 if (step == 0)
                 {
                     playerType = E_PlayerType.TURNA;
+                    playerA.resetInningParameter();
                     randomDice = true;
-                    randomTime = 1;
+                    randomTime = randomTimeDefault;
+                    print(randomTime);
                     diceUI.color = new Color(.8f, 0, 0, 0.5f);
                     tipUIAnimation($"{playerA_Name[0]} {playerA_Name[1]} 回 合");
                 }
@@ -74,11 +78,11 @@ public class GameLogic : MonoBehaviour
         }
     }
 
-    public void diceStep(Snakes player)
+    public void diceStep(Snakes player, int inningAdd)
     {
         if (randomDice)
         {
-            int randomStep = Random.Range(10, 20);
+            int randomStep = Random.Range(5, 10);
 
             randomTime -= Time.deltaTime;
             if (randomTime > 0)
@@ -91,7 +95,7 @@ public class GameLogic : MonoBehaviour
                 diceUI.text = randomStep.ToString();
                 player.stepNum = randomStep;
                 step = randomStep;
-                player.playerInningNum += 1;
+                player.playerInningNum += inningAdd;
                 player.doubleSpeedInningNum -= 1;
                 randomDice = false;
             }

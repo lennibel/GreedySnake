@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodSubtractRival : Food
+public class FoodSubtractOpponent : Food
 {
     public override void foodSkill()
     {

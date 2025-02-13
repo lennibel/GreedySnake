@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodReversalRival : Food
+public class FoodEnableTrigger : Food
 {
     public override void foodSkill()
     {
         
     }
+
 
 }

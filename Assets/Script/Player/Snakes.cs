@@ -10,22 +10,20 @@ public abstract class Snakes : MonoBehaviour
 {
     public GameObject SnakeSegment;
     public GameLogic gameLogic;
+    public Snakes opponent;
 
     [HideInInspector]public int stepNum;
     [HideInInspector]public int playerInningNum;
     [HideInInspector]public int doubleSpeedInningNum;
+    [HideInInspector]public int thisInningAddNum;
+    [HideInInspector]public bool enableFoodTrigger = true;
 
     protected Vector2 orientation;
-    protected List<GameObject> _body = new List<GameObject>();
+    [HideInInspector]public List<GameObject> _body = new List<GameObject>();
     protected List<Vector3> positionHistory = new List<Vector3>();
     protected int stepLength;
 
-    // protected int
 
-
-
-
-    
     protected void fixPosition()
     {
         if (stepLength > 0)
@@ -42,7 +40,25 @@ public abstract class Snakes : MonoBehaviour
             
             fixBodyPos();
         }
-        
+    }
+    public void reverseBody()
+    {
+        this.transform.position = _body[_body.Count - 1].transform.position;
+        for(int i = positionHistory.Count - 1; i > 0; i--)
+        {
+            if(i > _body.Count)
+            {
+                positionHistory.RemoveAt(i);
+            }
+            else break;
+        }
+        positionHistory.Reverse();
+        fixBodyPos();
+    }
+    public void resetInningParameter()
+    {
+        enableFoodTrigger = true;
+        thisInningAddNum = 0;
     }
     protected void fixBodyPos()
     {
@@ -76,47 +92,57 @@ public abstract class Snakes : MonoBehaviour
 
     private void  OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Food")
+        if (other.tag == "Food" && enableFoodTrigger)
         {
-            if (other.TryGetComponent(out FoodAdd a))
+            if(enableFoodTrigger)
             {
-                AddBody();
-            }
-            else if (other.TryGetComponent(out FoodSubtract s))
-            {
-                subtractBody(s.foodNum);
-            }
-            else if (other.TryGetComponent(out FoodDoubleStep d))
-            {
-                doubleSpeedInningNum = Mathf.Max(doubleSpeedInningNum,0);
-                doubleSpeedInningNum += 3;   
-            }
-            //重置地图食物
-            else if (other.TryGetComponent(out FoodReset r))
-            {
-                r.foodSkill();
-            }
-            //菜就多练
-            else if (other.TryGetComponent(out FoodAgainDice again ))
-            {
-                gameLogic.diceStep(this);
-            }
-            //反转对手
-            else if(other.TryGetComponent(out FoodReversalRival rr))
-            {
+                if (other.TryGetComponent(out FoodAdd a))
+                {
+                    AddBody();
+                    thisInningAddNum += 1;
+                }
+                else if (other.TryGetComponent(out FoodSubtract s))
+                {
+                    subtractBody(s.foodNum);
+                }
+                else if (other.TryGetComponent(out FoodDoubleStep d))
+                {
+                    doubleSpeedInningNum = Mathf.Max(doubleSpeedInningNum,0);
+                    doubleSpeedInningNum += 3;   
+                }
+                //重置地图食物
+                else if (other.TryGetComponent(out FoodReset r))
+                {
+                    r.foodSkill();
+                }
+                //菜就多练
+                else if (other.TryGetComponent(out FoodAgainDice again ))
+                {
+                    gameLogic.randomDice = true;
+                    gameLogic.randomTime = gameLogic.randomTimeDefault;
+                    gameLogic.diceStep(this,0);
 
+                    print(this.name);
+                }
+                //反转对手或都反转
+                else if(other.TryGetComponent(out FoodReverse re))
+                {
+                    opponent.reverseBody();
+                    if (re.foodNum == 2)this.reverseBody();
+                    
+                }
+                //减去对手上回合增加的身体
+                else if(other.TryGetComponent(out FoodSubtractOpponent sr))
+                {
+                    opponent.subtractBody(opponent.thisInningAddNum);
+                }
+                //本回合吃到的食物无效
+                else if(other.TryGetComponent(out FoodEnableTrigger tr))
+                {
+                    enableFoodTrigger = false;
+                    print(enableFoodTrigger);
+                }
             }
-            //反转自己和对手
-            else if(other.TryGetComponent(out FoodReversalSelf rs))
-            {
-
-            }
-            //减去对手上回合增加的身体
-            else if(other.TryGetComponent(out FoodSubtractRival sr))
-            {
-
-            }
-            
 
             Destroy(other.gameObject);
         }
