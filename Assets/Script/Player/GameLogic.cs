@@ -56,7 +56,6 @@ public class GameLogic : MonoBehaviour
                     playerA.resetInningParameter();
                     randomDice = true;
                     randomTime = randomTimeDefault;
-                    print(randomTime);
                     diceUI.color = new Color(.8f, 0, 0, 0.5f);
                     tipUIAnimation($"{playerA_Name[0]} {playerA_Name[1]} 回 合");
                 }

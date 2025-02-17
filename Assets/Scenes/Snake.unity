@@ -1173,7 +1173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomFoodTypes:
   - FoodType: {fileID: 8104752895930900261, guid: 01ec8013498f3ed4681f25319b2340e8, type: 3}
-    Probability: 0.716
+    Probability: 0.066
   - FoodType: {fileID: 6718992304746691990, guid: 3e3d748f232f2394a85c2683bd971477, type: 3}
     Probability: 1
   - FoodType: {fileID: 4609184098776596775, guid: dc3c4b72e141f79478595fc74ebd47f2, type: 3}
@@ -1181,7 +1181,7 @@ MonoBehaviour:
   - FoodType: {fileID: 757650884642187281, guid: 4852618d27b13bd4cbeb74f0f70f22ea, type: 3}
     Probability: 0.01
   - FoodType: {fileID: 3451556396607023502, guid: 738e2c9281cae0947b6cedaf795f4826, type: 3}
-    Probability: 0.06
+    Probability: 0.004
   - FoodType: {fileID: 1738319069881508268, guid: 071bbd31c0d1d8b44b9684a3c92c6014, type: 3}
     Probability: 0.03
   - FoodType: {fileID: 6450723261094016660, guid: 0dcc36e481be50f4baa506e8a1f3515f, type: 3}

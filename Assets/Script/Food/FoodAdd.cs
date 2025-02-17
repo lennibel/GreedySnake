@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class FoodAdd : Food
 {
-    public override void foodSkill()
+    public override void foodSkill(Snakes snakes)
     {
-        
+        snakes.AddBody();
+        snakes.thisInningAddNum += 1;
     }
 
 

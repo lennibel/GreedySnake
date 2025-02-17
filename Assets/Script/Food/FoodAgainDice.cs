@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class FoodAgainDice : Food
 {
-    public override void foodSkill()
+    public override void foodSkill(Snakes snakes)
     {
-       
+        snakes.gameLogic.randomDice = true;
+        snakes.gameLogic.randomTime = snakes.gameLogic.randomTimeDefault;
+        snakes.gameLogic.diceStep(snakes, 0);
     }
 
 }

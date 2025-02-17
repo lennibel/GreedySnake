@@ -5,10 +5,9 @@ using UnityEngine.AI;
 
 public class FoodDoubleStep : Food
 {
-    public override void foodSkill()
+    public override void foodSkill(Snakes snakes)
     {
-        // PlayerA p = currentPlayer.GetComponent<PlayerA>();
-        // p.stepLength *= 2;
-        // if (p.stepNum == 0)
+        snakes.doubleSpeedInningNum = Mathf.Max(snakes.doubleSpeedInningNum, 0);
+        snakes.doubleSpeedInningNum += 3;
     }
 }

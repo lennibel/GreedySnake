@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class FoodReverse : Food
 {
-    public override void foodSkill()
+    public override void foodSkill(Snakes snakes)
     {
-        
+        snakes.opponent.reverseBody();
+        if (foodNum == 2) snakes.reverseBody();
     }
 
 }

@@ -6,7 +6,9 @@ public abstract class Food : MonoBehaviour
 {
     protected GameObject currentPlayer;
     public int foodNum;
-    public abstract void foodSkill();
+    public string foodName;
+    public string foodDescription;
+    public abstract void foodSkill(Snakes snakes);
     private void  OnTriggerEnter2D(Collider2D other)
     {
         // if (other.tag == "Player")

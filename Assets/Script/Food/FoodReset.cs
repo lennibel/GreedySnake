@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FoodReset : Food
 {
-    public override void foodSkill()
+    public override void foodSkill(Snakes snakes)
     {
         CreateFood c = transform.parent.GetComponent<CreateFood>();
         c.createFoods();

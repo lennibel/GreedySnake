@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class FoodSubtract : Food
 {
-    public override void foodSkill()
+    public override void foodSkill(Snakes snakes)
     {
-        
+        snakes.subtractBody(foodNum);
     }
 
 }
