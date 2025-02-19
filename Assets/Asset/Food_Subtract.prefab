@@ -125,3 +125,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foodNum: 1
+  foodName: -1
+  foodDescription: 

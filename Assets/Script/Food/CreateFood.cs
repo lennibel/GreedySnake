@@ -38,7 +38,7 @@ public class CreateFood : MonoBehaviour
         {
             for (int j = 0; j < Mathf.Round(bounds.max.x * 2); j++)
             {
-                Vector2 newPos = new Vector2(Mathf.Round(bounds.min.x) + j, Mathf.Round(bounds.min.y) + i + 1);
+                Vector2 newPos = new Vector2(Mathf.Round(bounds.min.x) + j + 1, Mathf.Round(bounds.min.y) + i + 1);
                 //遇到玩家对象跳过
                 bool thisPlayer = false;
                 for (int z = 0; z < playersPos.Count; z++)

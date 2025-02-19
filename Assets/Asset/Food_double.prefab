@@ -125,3 +125,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foodNum: 2
+  foodName: "\u5927\u6B65\u6D41\u661F"
+  foodDescription: "\u4E09\u56DE\u5408\u6B65\u5E45\u589E\u500D"

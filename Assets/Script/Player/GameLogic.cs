@@ -10,11 +10,14 @@ public class GameLogic : MonoBehaviour
     public Text diceUI;
     public Text tipUI;
     public E_PlayerType playerType;
+    public Color playerADiceColor;
+    public Color playerBDiceColor;
     [HideInInspector] public int step;
     [HideInInspector] public bool playGame = true;
     [HideInInspector]public float randomTime;
     [HideInInspector]public float randomTimeDefault = 0.5f;
     [HideInInspector]public bool randomDice = true;
+    [HideInInspector]public bool collectionIsOver = false;
 
     [Header("display text")]
     public string playerA_Name = "红方";
@@ -26,7 +29,7 @@ public class GameLogic : MonoBehaviour
     void Start()
     {
         playerType = E_PlayerType.TURNA;
-        diceUI.color = new Color(.8f, 0, 0, 0.5f);
+        diceUI.color = playerADiceColor;
         tipUIAnimation($"{playerA_Name[0]} {playerA_Name[1]} 回 合");
     }
 
@@ -37,26 +40,26 @@ public class GameLogic : MonoBehaviour
             if (playerType == E_PlayerType.TURNA)
             {
                 diceStep(playerA,1);
-                if (step == 0)
+                if (step == 0 && collectionIsOver)
                 {
                     playerType = E_PlayerType.TURNB;
                     playerB.resetInningParameter();
                     randomDice = true;
                     randomTime = randomTimeDefault;
                     tipUIAnimation($"{playerB_Name[0]} {playerB_Name[1]} 回 合");
-                    diceUI.color = new Color(0, 0, 1, 0.5f);
+                    diceUI.color = playerBDiceColor;
                 }
             }
             else
             {
                 diceStep(playerB,1);
-                if (step == 0)
+                if (step == 0 && collectionIsOver)
                 {
                     playerType = E_PlayerType.TURNA;
                     playerA.resetInningParameter();
                     randomDice = true;
                     randomTime = randomTimeDefault;
-                    diceUI.color = new Color(.8f, 0, 0, 0.5f);
+                    diceUI.color = playerADiceColor;
                     tipUIAnimation($"{playerA_Name[0]} {playerA_Name[1]} 回 合");
                 }
             }
@@ -81,7 +84,7 @@ public class GameLogic : MonoBehaviour
     {
         if (randomDice)
         {
-            int randomStep = Random.Range(5, 10);
+            int randomStep = Random.Range(1, 6);
 
             randomTime -= Time.deltaTime;
             if (randomTime > 0)

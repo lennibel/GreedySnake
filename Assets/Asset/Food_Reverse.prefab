@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: bd59750d4fc21a343b08ce082a3733cd, type: 3}
-  m_Color: {r: 1, g: 0.8624265, b: 0, a: 0.38431373}
+  m_Color: {r: 0.5471698, g: 0.5085562, b: 0.26584196, a: 0.38431373}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -125,3 +125,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foodNum: 1
+  foodName: "\u5012\u53CD\u5929\u7F61"
+  foodDescription: "\u53CD\u8F6C\u5BF9\u624B\u5934\u5C3E"

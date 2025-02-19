@@ -19,11 +19,12 @@ public class TestTipText : MonoBehaviour
     void Update()
     {
 
-        text.text = $"player name:          {player.name}\n" + 
-                    $"player step number:   {player.stepNum}\n" + 
-                    $"player Inning Number: {player.playerInningNum}\n" +
-                    $"body length:          {player._body.Count}\n" +
-                    $"Inning Add number:    {player.playerInningNum}";
+        text.text = $"玩家名称:{player.name}\n" + 
+                    $"剩余步数:{player.stepNum}\n" + 
+                    $"总回合数:{player.playerInningNum}\n" +
+                    $"身体长度:{player._body.Count}\n" +
+                    $"历史步数:{player.positionHistory.Count}\n" +
+                    $"本回合加:{player.playerInningNum}";
 
     }
 }
